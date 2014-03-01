@@ -1,0 +1,20 @@
+Fx1 = 0;
+Fx2 = 0;
+force1[input_] := Fx1 = input;
+force2[input_] := Fx2 = input;
+
+force1[x^2*Cos[x]] (*Input function in form "x"*)
+force2[x[t]^2*Cos[x[t]]] (*Input function in form "x[t]"*)
+
+c = 3*10^8
+
+Manipulate[
+ Show[ StreamPlot[{(p/m)/Sqrt[1 + p^2/(c^2*m^2)], Fx1}, {x, -10, 
+    10}, {p, -10, 10}], 
+  ParametricPlot[
+   Evaluate[{x[t], p[t]} /. 
+     NDSolve[{p'[t] == Fx2, 
+       x'[t] == (p[t]/m)/Sqrt[1 + p[t]^2/(c^2*m^2)], p[0] == p0, 
+       x[0] == x0}, {p, x}, {t, 0, time}]], {t, 0, time}, 
+   PlotRange -> All, PlotStyle -> Red]], {m, 1, 10}, {x0, -10, 
+  10}, {p0, -10, 10}, {time, 0.001, 20}]
